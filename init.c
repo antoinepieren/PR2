@@ -6,7 +6,6 @@ void init(void){
     initTimer();
     initCAN();
     MI2CInit();
-    char init = 0;
     INTCONbits.PEIE = 1;  // Validation INT p?riph?rique
     INTCONbits.GIE = 1;  // Validation Globale des interruptions
 
