@@ -1,15 +1,22 @@
 #include<p18f2520.h>
 #include<stdlib.h>
+#include "Def.h"
 
-char message[] = "Entrer vitesse: ";
 unsigned char i=0;
+unsigned char j;
+char message[] = "Entrer vitesse: ";
+char messageBat[] = "Batterie: ";
+
+unsigned char batterie[8] = {255,255,255,255,255,255,255,255};
 unsigned char compteurBat = 0;
+unsigned char indiceBat = 0;
+unsigned int tensionBat = 123;
+unsigned char tensionBat2 = 123;
+
 unsigned char compteurSon = 0;
 unsigned char compteur = 0;
-unsigned char j;
 
 void HighISR(void);
-
 
 #pragma code HighVector=0x08
 void IntHighVector(void)
@@ -26,15 +33,39 @@ void HighISR(void)
         PIR1bits.TMR2IF=0; // Validation interruption
         // Compteur Batterie
         if(compteurBat == 100){
-            LATBbits.LATB5=~LATBbits.LATB5;
+            // Moyenne glissante
             compteurBat = 0;
+            batterie[indiceBat] = tensionBat2;
+            indiceBat ++;
+            indiceBat %= 8;
+            tensionBat = 0;
+            for(j=0;j<8;j++){
+                tensionBat += batterie[j];
+            }
+            tensionBat/=8;
+
+            // Allumage de la LED
+            if(tensionBat < 150){
+                LATBbits.LATB5 = 1;
+            }
+            
+            // Affichage
+            print(messageBat);
+            tensionBat = (tensionBat + 14) / 16; // Conversion en V
+            write(tensionBat/10+48);
+            write(tensionBat%10+48);
+            write('V');
+            write('\r\n');
+            
         }
         else{
             compteurBat++;
         }
         // Compteur Sonar
         if(compteurSon == 10){
-            LATBbits.LATB5=~LATBbits.LATB5;
+            //LATBbits.LATB5=~LATBbits.LATB5;
+            write('S');
+            write('\r\n');
             compteurSon = 0;
         }
         else{

@@ -6,9 +6,9 @@
 #pragma config PBADEN = OFF, WDT = OFF, LVP = OFF, DEBUG = ON
 #include "init.h"
 #include "inter.h"
-#include "MI2C.h"
+//#include "MI2C.h"
 
-void write_char(char c);
+void write(char c);
 void print(char *string);
 
 #endif	/* DEF_H */

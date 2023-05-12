@@ -2,11 +2,11 @@
 #include "init.h"
 
 void init(void){
-    //initHorloge();
-    //initTimer();
+    initHorloge();
+    initTimer();
     //initCAN();
-    //MI2CInit();
-    char init = 0;
+    MI2CInit();
+    
 }
 
 void initHorloge(void){
