@@ -1,12 +1,22 @@
 #include<p18f2520.h>
 #include<stdlib.h>
-
+#include "Def.h"
 char message[] = "Entrer vitesse: ";
-unsigned char i=0;
+char messageBat[] = "Batterie: ";
+
+unsigned char batterie[8] = {255,255,255,255,255,255,255,255};
 unsigned char compteurBat = 0;
+unsigned char indiceBat = 0;
+unsigned int tensionBat = 123;
+unsigned char tensionBat2;
+
 unsigned char compteurSon = 0;
 unsigned char compteur = 0;
+unsigned char i=0;
+
 unsigned char j;
+unsigned char UBat;
+
 
 void HighISR(void);
 
@@ -26,15 +36,42 @@ void HighISR(void)
         PIR1bits.TMR2IF=0; // Validation interruption
         // Compteur Batterie
         if(compteurBat == 100){
-            LATBbits.LATB5=~LATBbits.LATB5;
+            //LATBbits.LATB5=~LATBbits.LATB5;
+            print(messageBat);
             compteurBat = 0;
+            batterie[indiceBat] = UBat;
+            indiceBat ++;
+            indiceBat %= 8;
+            tensionBat = 0;
+            for(j=0;j<8;j++){
+                tensionBat += batterie[j];
+            }
+            tensionBat/=8;
+            write(tensionBat/100+48);
+            write((tensionBat%100)/10+48);
+            write(tensionBat%10+48);
+            write('\r\n');
+            if(tensionBat < 150){
+                LATBbits.LATB5 = 1;
+            }
+            ADCON0bits.GO=1; //Lancer la conversion
         }
         else{
             compteurBat++;
         }
+        if(PIR1bits.ADIF){
+        PIR1bits.ADIF=0;
+        UBat=ADRESH;
+
+    }
+        if(PIR1bits.ADIF){
+        PIR1bits.ADIF=0;
+        UBat=ADRESH;
+
+    }
         // Compteur Sonar
         if(compteurSon == 10){
-            LATBbits.LATB5=~LATBbits.LATB5;
+            //LATBbits.LATB5=~LATBbits.LATB5;
             compteurSon = 0;
         }
         else{
@@ -76,6 +113,7 @@ void main(void) {
 
 /* Configuration Oscillateur*/
     initHorloge();
+    initCAN();
 
 /* Configuration TIMER2 */
     T2CONbits.T2CKPS1= 1;  // Prescaler = 16

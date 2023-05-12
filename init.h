@@ -6,5 +6,5 @@
 void init(void);
 void initHorloge(void);
 void initTimer(void);
-
+void initCAN(void);
 #endif

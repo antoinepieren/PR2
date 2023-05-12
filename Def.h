@@ -8,7 +8,7 @@
 #include "inter.h"
 #include "MI2C.h"
 
-void write_char(char c);
+void write(char c);
 void print(char *string);
 
 #endif	/* DEF_H */
