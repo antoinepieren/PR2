@@ -75,7 +75,7 @@ void print(char *string){
 void main(void) {
 
 /* Configuration Oscillateur*/
-    OSCCONbits.IRCF = 7 ; //8MHz
+    initHorloge();
 
 /* Configuration TIMER2 */
     T2CONbits.T2CKPS1= 1;  // Prescaler = 16
