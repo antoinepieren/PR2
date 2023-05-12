@@ -10,7 +10,7 @@ char messageBat[] = "Batterie: ";
 unsigned char batterie[8] = {255,255,255,255,255,255,255,255};
 unsigned char compteurBat = 0;
 unsigned char indiceBat = 0;
-unsigned int tensionBat = 123;
+unsigned int tensionBat;
 unsigned char compteurSon = 0;
 unsigned char compteur = 0;
 unsigned char UBat;
@@ -33,44 +33,13 @@ void HighISR(void)
         PIR1bits.TMR2IF=0; // Validation interruption
         // Compteur Batterie
         if(compteurBat == 100){
-            // Moyenne glissante
             compteurBat = 0;
-            batterie[indiceBat] = UBat;
-            indiceBat ++;
-            indiceBat %= 8;
-            tensionBat = 0;
-            for(j=0;j<8;j++){
-                tensionBat += batterie[j];
-            }
-            tensionBat/=8;
             ADCON0bits.GO=1; //Lancer la conversion
-
-            // Allumage de la LED
-            if(tensionBat < 150){
-                LATBbits.LATB5 = 1;
-            }
-            
-            // Affichage
-            print(messageBat);
-            tensionBat = (tensionBat + 14) / 16; // Conversion en V
-            write(tensionBat/10+48);
-            write(tensionBat%10+48);
-            write('V');
-            write('\r\n');
         }
         else{
             compteurBat++;
         }
-        if(PIR1bits.ADIF){
-        PIR1bits.ADIF=0;
-        UBat=ADRESH;
-
-    }
-        if(PIR1bits.ADIF){
-        PIR1bits.ADIF=0;
-        UBat=ADRESH;
-
-    }
+        
         // Compteur Sonar
         if(compteurSon == 10){
             //LATBbits.LATB5=~LATBbits.LATB5;
@@ -88,6 +57,43 @@ void HighISR(void)
     {
         PIE1bits.TXIE = 0;
     }
+
+    if(PIR1bits.ADIF){
+            PIR1bits.ADIF=0;
+            UBat=ADRESH;
+
+            // Moyenne glissante
+            // Update tableau batterie
+            batterie[indiceBat] = UBat;
+            indiceBat ++;
+            indiceBat %= 8;
+            //write(indiceBat + 48);
+            //write('\r\n');
+
+            // Moyenne
+            tensionBat = 0;
+            for(j=0;j<8;j++){
+                tensionBat += batterie[j];
+            }
+            tensionBat/=8;
+            
+            // Allumage de la LED
+            if(tensionBat < 150){
+                LATBbits.LATB5 = 1;
+            }
+            
+            // Affichage
+            print(messageBat);
+            write(tensionBat/100+48);
+            write((tensionBat%100)/10+48);
+            write(tensionBat%10+48);
+            write(':');
+            tensionBat = (tensionBat + 14) / 16; // Conversion en V
+            write(tensionBat/10+48);
+            write(tensionBat%10+48);
+            write('V');
+            write('\r\n');
+        }
 
     if(INTCONbits.INT0IF)      //INT0
     {
