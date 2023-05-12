@@ -4,11 +4,37 @@
 void init(void){
     initHorloge();
     initTimer();
-    //initCAN();
+    initCAN();
     MI2CInit();
-    
+    char init = 0;
+    INTCONbits.PEIE = 1;  // Validation INT p?riph?rique
+    INTCONbits.GIE = 1;  // Validation Globale des interruptions
+
 }
 
+void initCAN(void){
+    /* Configuration E/S*/
+	TRISBbits.TRISB5=0;	// RB5 en sortie LED TEST
+/*Configuraation entr�e analogique*/
+    ADCON1bits.PCFG=12;
+
+/*S�lection Vref+,Vref-*/
+    ADCON1bits.VCFG=0; // inutile configuration par defaut
+/*Choix TAD*/
+    ADCON2bits.ADCS=1; //N=8, T_AD = 1us
+/*T acquisition*/
+    ADCON2bits.ACQT=3;  // Temps acq = 6�s > 4.2�s
+ /* Choix AN2*/
+    ADCON0bits.CHS=2;
+ /*Justification � gauche*/
+    ADCON2bits.ADFM=0;
+ /*Validation ADC (d�marage p�riph�rique)*/
+    ADCON0bits.ADON=1;
+  /*Interruption*/
+    PIR1bits.ADIF=0; // Effacement
+    PIE1bits.ADIE=1;// Demasquage
+    INTCONbits.PEIE=1; // Val p�riph�rique
+}
 void initHorloge(void){
     OSCCONbits.IRCF = 7; // 8Mhz
 }

@@ -11,10 +11,10 @@ unsigned char batterie[8] = {255,255,255,255,255,255,255,255};
 unsigned char compteurBat = 0;
 unsigned char indiceBat = 0;
 unsigned int tensionBat = 123;
-unsigned char tensionBat2 = 123;
-
 unsigned char compteurSon = 0;
 unsigned char compteur = 0;
+unsigned char UBat;
+
 
 void HighISR(void);
 
@@ -35,7 +35,7 @@ void HighISR(void)
         if(compteurBat == 100){
             // Moyenne glissante
             compteurBat = 0;
-            batterie[indiceBat] = tensionBat2;
+            batterie[indiceBat] = UBat;
             indiceBat ++;
             indiceBat %= 8;
             tensionBat = 0;
@@ -43,6 +43,7 @@ void HighISR(void)
                 tensionBat += batterie[j];
             }
             tensionBat/=8;
+            ADCON0bits.GO=1; //Lancer la conversion
 
             // Allumage de la LED
             if(tensionBat < 150){
@@ -56,11 +57,20 @@ void HighISR(void)
             write(tensionBat%10+48);
             write('V');
             write('\r\n');
-            
         }
         else{
             compteurBat++;
         }
+        if(PIR1bits.ADIF){
+        PIR1bits.ADIF=0;
+        UBat=ADRESH;
+
+    }
+        if(PIR1bits.ADIF){
+        PIR1bits.ADIF=0;
+        UBat=ADRESH;
+
+    }
         // Compteur Sonar
         if(compteurSon == 10){
             //LATBbits.LATB5=~LATBbits.LATB5;
@@ -107,6 +117,7 @@ void main(void) {
 
 /* Configuration Oscillateur*/
     initHorloge();
+    initCAN();
 
 /* Configuration TIMER2 */
     T2CONbits.T2CKPS1= 1;  // Prescaler = 16
