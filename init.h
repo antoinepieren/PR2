@@ -2,6 +2,7 @@
 #define	INIT_H
 
 #include "MI2C.h"
+#include "functions.h"
 
 void init(void);
 void initTimer(void);

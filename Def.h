@@ -6,6 +6,7 @@
 #include "init.h"
 #include "inter.h"
 #include "MI2C.h"
+#include "functions.h"
 
 void write(char c);
 void print(char *string);
