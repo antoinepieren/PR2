@@ -8,9 +8,6 @@
 #include "MI2C.h"
 #include "functions.h"
 
-void write(char c);
-void print(char *string);
-
 extern unsigned char j;
 
 extern unsigned char marche;                                    // Booléen de marche/arrêt
