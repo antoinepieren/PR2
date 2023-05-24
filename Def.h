@@ -5,7 +5,7 @@
 
 #include "init.h"
 #include "inter.h"
-//#include "MI2C.h"
+#include "MI2C.h"
 
 void write(char c);
 void print(char *string);
