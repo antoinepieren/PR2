@@ -1,7 +1,7 @@
 #ifndef INTER_H
 #define	INTER_H
 
-void inter(void);
+void HighISR(void);
 
 #endif
 
