@@ -12,6 +12,7 @@ unsigned char compteurBat = 0;                                  // Compteur jusq
 unsigned char indiceBat = 0;                                    // Indice dans batterie pour moyenne glissante
 unsigned int tensionBat;                                        // Variable affichage batterie
 unsigned char compteurSon = 0;                                  // Compteur jusqu'à 10 (100ms)
+unsigned char compteurTel = 0;                                  // Compteur télécommande
 //unsigned char compteur = 0;
 unsigned char UBat;                                             // Tension instantanée batterie
 
@@ -109,27 +110,27 @@ void HighISR(void)
             write('V');
             write('\r\n');
 
-            Write_PCF8574(0x40, ~(distance)); // Affichage led
+            //Write_PCF8574(0x40, ~(distance)); // Affichage led
         }
 
     // Télécommande
     if(INTCONbits.INT0IF)      //INT0
     {
-      Write_PCF8574(0x40, 0b11111111);
-      while(1);
+      Write_PCF8574(0x40, 255);
       INTCONbits.INT0IF = 0;
       Ecrire_i2c_Telecom(0xA2, 0x31);
       while(Detecte_i2c(0xA2));
       Lire_i2c_Telecom(0xA2, touche);
-      if(touche[1]==0x33){ // Touche du milieu
-          if(marche == 0){
-              marche = 1;
-              
-          }
-          else{
-              marche = 0;
-          }
+      //if(touche[1]==0x33){ // Touche du milieu
+      Write_PCF8574(0x40, 254);
+      if(marche == 0){
+          marche = 1;
       }
+      else{
+          marche = 0;
+      }
+      //}
+      //while(1);
     }
 }
 
