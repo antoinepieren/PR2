@@ -10,7 +10,7 @@ unsigned char marche = 0;                                       // Booléen de m
 unsigned char led = 0;
 unsigned char distance;                                         // Variable distance lue par le sonar
 unsigned char mode = 0;                                         // Phase du programme
-unsigned char pwm_on = 62;                                      // Rapport cyclique pwm (250>>2)
+unsigned char pwm_on = 50;                                      // Rapport cyclique pwm (mesuré à 26.4 cm/s)
 
 void main(void) {
 
