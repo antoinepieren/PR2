@@ -12,20 +12,6 @@ unsigned char distance;                                         // Variable dist
 unsigned char mode = 0;                                         // Phase du programme
 unsigned char pwm_on = 62;                                      // Rapport cyclique pwm (250>>2)
 
-void write(char c){
-    while(PIE1bits.TXIE);
-    TXREG = c;
-    while(!PIR1bits.TXIF);
-}
-
-void print(char *string){
-    j = 0;
-    while(string[j] != '\0'){
-        write(string[j]);
-        j++;
-    }
-}
-
 void main(void) {
 
     init();
@@ -63,6 +49,7 @@ void main(void) {
         else{ // Arrêt des moteurs après appui sur le bouton du milieu de la telecommande
             CCPR1L = 0;
             CCPR2L = 0;
+            Write_PCF8574(0x40, 0);
         }
 
     }
