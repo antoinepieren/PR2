@@ -115,14 +115,16 @@ void HighISR(void)
     // Télécommande
     if(INTCONbits.INT0IF)      //INT0
     {
+      Write_PCF8574(0x40, 0b11111111);
+      while(1);
       INTCONbits.INT0IF = 0;
       Ecrire_i2c_Telecom(0xA2, 0x31);
       while(Detecte_i2c(0xA2));
       Lire_i2c_Telecom(0xA2, touche);
-      if(touche[1]==0x3){ // Touche du milieu
+      if(touche[1]==0x33){ // Touche du milieu
           if(marche == 0){
               marche = 1;
-              Write_PCF8574(0x40, 0b11111111);
+              
           }
           else{
               marche = 0;
