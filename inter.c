@@ -2,18 +2,19 @@
 #include "inter.h"
 #include "Def.h"
 
-char message[] = "Entrer vitesse: ";
+// Messages Uart
+/*
 char messageBat[] = "Batterie: ";
 char messageMode[] = "Mode : ";
 char messageSonar[] = "Sonar :";
+*/
 
 unsigned char batterie[8] = {255,255,255,255,255,255,255,255};  // Tableau moyenne glissante batterie
 unsigned char compteurBat = 0;                                  // Compteur jusqu'à 100 (1s)
 unsigned char indiceBat = 0;                                    // Indice dans batterie pour moyenne glissante
 unsigned int tensionBat;                                        // Variable affichage batterie
 unsigned char compteurSon = 0;                                  // Compteur jusqu'à 10 (100ms)
-unsigned char compteurTel = 0;                                  // Compteur télécommande
-//unsigned char compteur = 0;
+unsigned char compteurTel = 0;                                  // Compteur télécommande (2s)
 unsigned char UBat;                                             // Tension instantanée batterie
 
 unsigned char touche[3];                                        // Touche télécommande
@@ -49,7 +50,8 @@ void HighISR(void)
             SONAR_Write(0xE0, 0x00);
             SONAR_Write(0xE0, 0x51);
 
-            // Affichage sonar
+            // Affichage sonar uart
+            /*
             print(messageSonar);
             write(distance/100+48);
             write((distance%100)/10+48);
@@ -60,6 +62,7 @@ void HighISR(void)
             print(messageMode); // Affichage mode
             write(mode%10+48);
             write('\r\n');
+            */
 
 
         }
@@ -70,7 +73,7 @@ void HighISR(void)
         // Compteur télécommande
         if (compteurTel > 0){
           compteurTel ++;
-          if (compteurTel > 200){
+          if (compteurTel > 200){ // 2 secondes pour éviter les appuis répétés
             compteurTel = 0;
           }
         }
@@ -79,6 +82,7 @@ void HighISR(void)
     }
 
     //UART
+    
     if(PIR1bits.TXIF && PIE1bits.TXIE)
     {
         PIE1bits.TXIE = 0;
@@ -107,7 +111,8 @@ void HighISR(void)
                 LATBbits.LATB5 = 1;
             }
 
-            // Affichage
+            // Affichage uart (pour les simulations)
+            /*
             print(messageBat);
             write(tensionBat/100+48);
             write((tensionBat%100)/10+48);
@@ -118,8 +123,9 @@ void HighISR(void)
             write(tensionBat%10+48);
             write('V');
             write('\r\n');
+            */
 
-            led = distance;
+            led = distance; // L'affichage de ~led se fait dans la boucle main
         }
 
     // Télécommande
@@ -132,7 +138,6 @@ void HighISR(void)
         while(Detecte_i2c(0xA2));
         Lire_i2c_Telecom(0xA2, touche);
         if(touche[1]==0x33){ // Touche du milieu
-          //led = touche[1];
           if(marche == 0){
               marche = 1;
           }

@@ -7,7 +7,7 @@
 unsigned char j;
 char messageInit[] = "Fin init";
 unsigned char marche = 0;                                       // Booléen de marche/arrêt
-unsigned char led = 0b00000000;
+unsigned char led = 0;
 unsigned char distance;                                         // Variable distance lue par le sonar
 unsigned char mode = 0;                                         // Phase du programme
 unsigned char pwm_on = 62;                                      // Rapport cyclique pwm (250>>2)
@@ -16,13 +16,12 @@ void main(void) {
 
     init();
     print(messageInit);
-    write('\r\n');
+    //write('\r\n'); // Pas nécessaire si on affiche rien d'autre
     
     while(1){
         Write_PCF8574(0x40, ~led);
         if(marche == 1){ // Programme du mouvement qui s'arrête après appui sur le bouton du milieu de la telecommande
             if(mode == 2){
-                //led = 2;
                 if(distance > 50){
                     CCPR1L = pwm_on;
                     CCPR2L = pwm_on;
@@ -35,7 +34,6 @@ void main(void) {
             else{
                 if(distance > 40 && distance < 150){
                     mode = 1;
-                    //led = 1;
                     CCPR1L = pwm_on;
                     CCPR2L = pwm_on;
                 }
