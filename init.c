@@ -16,6 +16,8 @@ void init(void){
     initUART();
     MI2CInit();
 
+    PORTAbits.RA6 = 0;
+    PORTAbits.RA7 = 0;
 
     INTCON2bits.INTEDG0 = 0; // Interruption front descendant INT0
     INTCONbits.INT0IE = 1; // Validation INT0
