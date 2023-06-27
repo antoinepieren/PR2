@@ -2,11 +2,12 @@
 #ifndef DEF_H
 #define	DEF_H
 
-
+#include<stdio.h>
 #include "init.h"
 #include "inter.h"
 #include "MI2C.h"
 #include "functions.h"
+
 
 extern unsigned char j;
 

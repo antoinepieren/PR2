@@ -8,14 +8,14 @@ void init(void){
 
     TRISBbits.RB0 = 1; //INT0
     PORTBbits.RB1 = 1; //IR OFF
-    TRISAbits.RA6 = 0; //DIRD sortie
-    TRISAbits.RA7 = 0; //DIRG sotie
-
+    
     initTimer();
     initCAN();
     initUART();
     MI2CInit();
 
+    TRISAbits.RA6 = 0; //DIRD sortie
+    TRISAbits.RA7 = 0; //DIRG sotie
     PORTAbits.RA6 = 1; //DRID en avance
     PORTAbits.RA7 = 1; //DIRG en avance
 

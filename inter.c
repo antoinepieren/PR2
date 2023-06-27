@@ -3,11 +3,11 @@
 #include "Def.h"
 
 // Messages Uart
-/*
-char messageBat[] = "Batterie: ";
-char messageMode[] = "Mode : ";
-char messageSonar[] = "Sonar :";
-*/
+
+char messageBat[] = "Batterie:";
+char messageMode[] = "Mode:";
+char messageSonar[] = "Sonar:";
+
 
 unsigned char batterie[8] = {255,255,255,255,255,255,255,255};  // Tableau moyenne glissante batterie
 unsigned char compteurBat = 0;                                  // Compteur jusqu'à 100 (1s)
@@ -56,13 +56,16 @@ void HighISR(void)
             write(distance/100+48);
             write((distance%100)/10+48);
             write(distance%10+48);
-            write('\r\n');
-
+            //write('\r\n');
+            */
             // Affichage
+            /*
             print(messageMode); // Affichage mode
             write(mode%10+48);
-            write('\r\n');
             */
+            printf("Mode : %d\r\n",mode);
+            //write('\r\n');
+            
 
 
         }
@@ -73,7 +76,7 @@ void HighISR(void)
         // Compteur télécommande
         if (compteurTel > 0){
           compteurTel ++;
-          if (compteurTel > 200){ // 2 secondes pour éviter les appuis répétés
+          if (compteurTel > 50){ // 500 millisecondes pour éviter les appuis répétés
             compteurTel = 0;
           }
         }
@@ -122,8 +125,11 @@ void HighISR(void)
             write(tensionBat/10+48);
             write(tensionBat%10+48);
             write('V');
-            write('\r\n');
             */
+            //write('\r\n');
+            tensionBat = (tensionBat + 14) / 16;
+            printf("Batterie : %dV\r\n",tensionBat);
+            
 
             led = distance; // L'affichage de ~led se fait dans la boucle main
         }
