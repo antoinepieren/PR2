@@ -4,7 +4,7 @@
 #pragma config OSC = INTIO67
 #pragma config PBADEN = OFF, WDT = OFF, LVP = OFF, DEBUG = ON
 
-unsigned char j;
+
 unsigned char marche;                                       // Booléen de marche/arrêt
 unsigned char led;                                          // Variable pour l'affichage des leds
 unsigned char distance;                                     // Variable distance lue par le sonar

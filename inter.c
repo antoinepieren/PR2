@@ -19,8 +19,6 @@ unsigned char UBat;                                             // Tension insta
 
 unsigned char touche[3];                                        // Touche télécommande
 
-
-
 #pragma code HighVector=0x08
 void IntHighVector(void)
 {
@@ -50,24 +48,7 @@ void HighISR(void)
             SONAR_Write(0xE0, 0x00);
             SONAR_Write(0xE0, 0x51);
 
-            // Affichage sonar uart
-            /*
-            print(messageSonar);
-            write(distance/100+48);
-            write((distance%100)/10+48);
-            write(distance%10+48);
-            //write('\r\n');
-            */
-            // Affichage
-            /*
-            print(messageMode); // Affichage mode
-            write(mode%10+48);
-            */
             printf("Mode : %d\r\n",mode);
-            //write('\r\n');
-            
-
-
         }
         else{
             compteurSon++;
@@ -114,22 +95,8 @@ void HighISR(void)
                 LATBbits.LATB5 = 1;
             }
 
-            // Affichage uart (pour les simulations)
-            /*
-            print(messageBat);
-            write(tensionBat/100+48);
-            write((tensionBat%100)/10+48);
-            write(tensionBat%10+48);
-            write(':');
-            tensionBat = (tensionBat + 14) / 16; // Conversion en V
-            write(tensionBat/10+48);
-            write(tensionBat%10+48);
-            write('V');
-            */
-            //write('\r\n');
             tensionBat = (tensionBat + 14) / 16;
             printf("Batterie : %dV\r\n",tensionBat);
-            
 
             led = distance; // L'affichage de ~led se fait dans la boucle main
         }

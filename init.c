@@ -92,15 +92,11 @@ void initTimer(void){
     CCP2CONbits.CCP2M3 = 1;
     CCP2CONbits.CCP2M2 = 1;
 
-    /* Reglage POST SCALEr*/
+    /* Reglage POST SCALER*/
     T2CONbits.T2OUTPS=9;
-
 
     T2CONbits.TMR2ON = 1; // Validation timer 2
 
     PIE1bits.TMR2IE=1;  // Validation IT TMR2
     IPR1bits.TMR2IP=1;  // Priorit? haute inutile (voir doc page 102)
-
-   
-
 }
