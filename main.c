@@ -5,11 +5,11 @@
 #pragma config PBADEN = OFF, WDT = OFF, LVP = OFF, DEBUG = ON
 
 
-unsigned char marche;                                       // Booléen de marche/arrêt
+unsigned char marche;                                       // Booléen de marche/arr�t
 unsigned char led;                                          // Variable pour l'affichage des leds
 unsigned char distance;                                     // Variable distance lue par le sonar
 unsigned char mode;                                         // Phase du programme
-unsigned char pwm_on;                                       // Rapport cyclique pwm (mesuré à 26.4 cm/s)
+unsigned char pwm_on;                                       // Rapport cyclique pwm (mesur� 26.4 cm/s)
 
 void main(void) {
     marche = 0;
@@ -24,7 +24,7 @@ void main(void) {
         Write_PCF8574(0x40, ~led);
         CCPR1L = pwm_on;
         CCPR2L = pwm_on;
-        if(marche == 1){ // Programme du mouvement qui s'arrête après appui sur le bouton du milieu de la telecommande
+        if(marche == 1){ // Programme du mouvement qui s'arrete apres appui sur le bouton du milieu de la telecommande
             if(mode == 2){
                 if(distance > 50 && distance < 150){
                     CCPR1L = pwm_on;
@@ -51,7 +51,7 @@ void main(void) {
                 }
             }
         }
-        else{ // Arrêt des moteurs après appui sur le bouton du milieu de la telecommande
+        else{ // Arret des moteurs apres appui sur le bouton du milieu de la telecommande
             CCPR1L = 0;
             CCPR2L = 0;
             led = 0;

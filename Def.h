@@ -1,4 +1,3 @@
-
 #ifndef DEF_H
 #define	DEF_H
 
@@ -12,5 +11,4 @@ extern unsigned char distance;                                  // Variable dist
 extern unsigned char mode;                                      // Phase du programme
 extern unsigned char led;                                       // Variable d'affichage des leds
 
-#endif	/* DEF_H */
-
+#endif
